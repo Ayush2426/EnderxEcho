@@ -1,12 +1,12 @@
 import User from "../models/user.model.js";
-import generateToken from "../lib/Utils.js"
+import generateToken from "../lib/Utils.js";
 import bcrypt from "bcryptjs";
-
+import cloudinary from "../lib/cloudinary.js";
 export const signup = async (req, res) => {
   const { email, userName, password } = req.body;
   try {
-    if(!email || !userName || !password) {
-        return res.status(400).json({ message: "All fields are required" });
+    if (!email || !userName || !password) {
+      return res.status(400).json({ message: "All fields are required" });
     }
     if (password.length < 8) {
       return res
@@ -45,7 +45,8 @@ export const signup = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-export const login = async(req, res) => {
+
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -74,15 +75,43 @@ export const login = async(req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
 export const logout = (req, res) => {
   try {
-    res.cookie("jwt", "", {maxAge:0})
+    res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.error("Error during logout:", error);
-    return res.status(500).json({ message: "Internal server error" });    
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
-export const updateProfile = async (req, res) =>{
-  
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { profilePic } = req.body;
+    const userId = req.user._id;
+    if (!profilePic) {
+      return res.status(400).json({ message: "Profile picture is required" });
+    }
+    const uploadRes = await cloudinary.uploader.upload(profilePic);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        profilePic: uploadRes.secure_url,
+      },
+      { new: true }
+    );
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const checkAuthorization = (req, res) => {
+  try {
+    res.status(200).json(req.user);
+  } catch (error) {
+    console.error("Error during authorization check:", error);
+    return res.status(500).json({ message: "Internal server error" });    
+  }
 }
