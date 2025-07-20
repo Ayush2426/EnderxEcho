@@ -6,7 +6,7 @@ import {
   Loader2,
   Lock,
   Mail,
-  MessageSquare,
+  Slack,
   User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -56,7 +56,7 @@ const SignUpPage = () => {
                 className="size-12 rounded-xl bg-primary/10 flex items-center justify-center 
               group-hover:bg-primary/20 transition-colors"
               >
-                <MessageSquare className="size-6 text-primary" />
+                <Slack className="size-6 text-primary" />
               </div>
               <h1 className="text-2xl font-bold mt-2">Create Account</h1>
               <p className="text-base-content/60">
@@ -167,8 +167,8 @@ const SignUpPage = () => {
       {/* right side */}
 
       <AuthImagePattern
-        title="Join our community"
-        subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
+        title="AyushVerma@2025 | Project09"
+        subtitle="EnderEcho - A real time chatting application made by Ayush using MERN stack and socket.io! Create Account now!"
       />
     </div>
   );

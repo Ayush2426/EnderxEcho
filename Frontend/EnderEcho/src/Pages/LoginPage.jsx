@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuthStore } from "../Store/useAuthStore";
 import AuthImagePattern from "../Components/AuthImagePattern";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, Slack } from "lucide-react";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,7 +29,7 @@ const LoginPage = () => {
                 className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20
               transition-colors"
               >
-                <MessageSquare className="w-6 h-6 text-primary" />
+                <Slack className="w-6 h-6 text-primary" />
               </div>
               <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
               <p className="text-base-content/60">Sign in to your account</p>
@@ -118,9 +118,9 @@ const LoginPage = () => {
 
       {/* Right Side - Image/Pattern */}
       <AuthImagePattern
-        title={"Welcome back!"}
+        title={"AyushVerma@2025 | Project09"}
         subtitle={
-          "Sign in to continue your conversations and catch up with your messages."
+          "EnderEcho - A real time chatting application made by Ayush using MERN stack and socket.io! Login now!"
         }
       />
     </div>
