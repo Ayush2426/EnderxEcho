@@ -7,23 +7,23 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    userName: {
+    fullName: {
       type: String,
       required: true,
     },
     password: {
       type: String,
       required: true,
-      minlength: 8,
+      minlength: 6,
     },
     profilePic: {
       type: String,
-      default:
-        "https://res.cloudinary.com/dz1qj3x8h/image/upload/v1706261234/EnderxEcho/defaultProfilePic.png",
+      default: "",
     },
   },
   { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);
+
 export default User;

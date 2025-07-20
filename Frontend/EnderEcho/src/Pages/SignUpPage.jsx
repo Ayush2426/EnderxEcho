@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuthStore } from "../Store/useAuthStore.js";
+import { useAuthStore } from "../Store/useAuthStore";
 import {
   Eye,
   EyeOff,
@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import AuthImagePattern from "../Components/AuthImagePattern.jsx";
+import AuthImagePattern from "../Components/AuthImagePattern";
 import toast from "react-hot-toast";
 
 const SignUpPage = () => {

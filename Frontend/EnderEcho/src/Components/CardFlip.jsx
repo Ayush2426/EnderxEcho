@@ -30,7 +30,7 @@ export default function CardFlip({
         className={cn(
           "relative w-full h-full [transform-style:preserve-3d] transition-all duration-700",
           isFlipped
-            ? "[transform:rotateY(540deg)]"
+            ? "[transform:rotateY(180deg)]"
             : "[transform:rotateY(0deg)]"
         )}
       >
@@ -72,7 +72,7 @@ export default function CardFlip({
               </div>
               <div className="relative group/icon">
                 <div className="absolute inset-[-8px] rounded-lg transition-opacity duration-300 bg-gradient-to-br from-orange-500/20 via-orange-500/10 to-transparent" />
-                <Repeat2 className="relative z-10 w-4 h-4 text-orange-500 transition-transform duration-300 group-hover/icon:scale-110 group-hover/icon:-rotate-12" />
+                <Repeat2 className="relative z-10 w-4 h-4 text-violet-700 transition-transform duration-300 group-hover/icon:scale-110 group-hover/icon:-rotate-12" />
               </div>
             </div>
           </div>
