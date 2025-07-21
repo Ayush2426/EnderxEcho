@@ -10,10 +10,6 @@ import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { app, server } from "./lib/socket.js";
 
-dotenv.config();
-
-const PORT = process.env.PORT;
-const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -23,6 +19,12 @@ app.use(
     credentials: true,
   })
 );
+dotenv.config();
+
+const PORT = process.env.PORT;
+const __dirname = path.resolve();
+
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);

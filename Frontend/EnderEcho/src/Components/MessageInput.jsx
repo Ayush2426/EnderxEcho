@@ -1,13 +1,56 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useChatStore } from "../Store/useChatStore";
-import { Image, Send, X } from "lucide-react";
+import { Image, Send, X, Mic } from "lucide-react";
 import toast from "react-hot-toast";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [isListening, setIsListening] = useState(false);
   const fileInputRef = useRef(null);
+  const recognitionRef = useRef(null);
   const { sendMessage } = useChatStore();
+
+  useEffect(() => {
+    if (
+      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
+    ) {
+      toast.error("Voice recognition not supported in this browser.");
+      return;
+    }
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setText((prev) => prev + " " + transcript);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.onerror = () => {
+      setIsListening(false);
+      toast.error("Voice input error. Try again.");
+    };
+
+    recognitionRef.current = recognition;
+  }, []);
+
+  const handleMicClick = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+    } else {
+      recognitionRef.current?.start();
+      setIsListening(true);
+    }
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -38,7 +81,6 @@ const MessageInput = () => {
         image: imagePreview,
       });
 
-      // Clear form
       setText("");
       setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -93,6 +135,16 @@ const MessageInput = () => {
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
+          </button>
+
+          <button
+            type="button"
+            className={`hidden sm:flex btn btn-circle ${
+              isListening ? "bg-red-500 text-white" : "text-zinc-400"
+            }`}
+            onClick={handleMicClick}
+          >
+            <Mic size={20} />
           </button>
         </div>
         <button

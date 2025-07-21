@@ -7,6 +7,12 @@ config();
 const seedUsers = [
   // Female Users
   {
+    email:"ender@example.com",
+    fullName:" Endermen AI ",
+    password: "Ender@123",
+    profilePic: "https://res.cloudinary.com/dd2bqjaxn/image/upload/v1753086757/endermen_hx2eio.jpg"
+  },
+  {
     email: "priya.sharma@example.com",
     fullName: "Priya Sharma",
     password: "123456",
