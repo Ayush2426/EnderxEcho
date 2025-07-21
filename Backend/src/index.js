@@ -29,7 +29,7 @@ const __dirname = path.resolve();
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.MODE === "production") {
   app.use(express.static(path.join(__dirname, "../Frontend/dist")));
 
   app.get("*", (req, res) => {
