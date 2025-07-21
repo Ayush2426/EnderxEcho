@@ -5,7 +5,7 @@ import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../Store/useAuthStore";
-import { formatMessageTime } from "../lib/utils";
+import { formatMessageTime } from "../Lib/utils.js";
 
 const ChatContainer = () => {
   const {
