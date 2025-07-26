@@ -71,7 +71,7 @@ app.use("/api/messages", messageRoutes);
 
 // --- Frontend Serving Logic (for Production) ---
 // This block should come AFTER all API routes.
-if (process.env.NODE_ENV === "production") {
+if (process.env.MODE === "production") {
   app.use(express.static(path.join(__dirname, "Frontend", "dist")));
 
   // Catch-all route to serve the main HTML file for any non-API GET request
