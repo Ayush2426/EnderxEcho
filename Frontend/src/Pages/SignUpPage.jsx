@@ -1,14 +1,6 @@
 import { useState } from "react";
 import { useAuthStore } from "../Store/useAuthStore";
-import {
-  Eye,
-  EyeOff,
-  Loader2,
-  Lock,
-  Mail,
-  Slack,
-  User,
-} from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, Slack, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import AuthImagePattern from "../Components/AuthImagePattern";
@@ -160,6 +152,13 @@ const SignUpPage = () => {
                 Sign in
               </Link>
             </p>
+            <br />
+            <br />
+            <br />
+            <br />
+            <span className="text-center from-purple-600 to-blue-400">
+              AyushVerma@2025 | Project09 | Explore EnderEcho | 🪶💗👋🏼
+            </span>
           </div>
         </div>
       </div>
