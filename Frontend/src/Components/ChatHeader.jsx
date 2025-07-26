@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { useAuthStore } from "../Store/useAuthStore";
 import { useChatStore } from "../Store/useChatStore";
+import CallButton from "./VideoCall/CallButton"; // ADDED: Import the new button
 
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
@@ -29,10 +30,13 @@ const ChatHeader = () => {
           </div>
         </div>
 
-        {/* Close button */}
-        <button onClick={() => setSelectedUser(null)}>
-          <X />
-        </button>
+        {/* UPDATED: Grouped action buttons together */}
+        <div className="flex items-center gap-2">
+          <CallButton />
+          <button onClick={() => setSelectedUser(null)}>
+            <X />
+          </button>
+        </div>
       </div>
     </div>
   );
