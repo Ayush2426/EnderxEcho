@@ -154,8 +154,6 @@ const SignUpPage = () => {
             </p>
             <br />
             <br />
-            <br />
-            <br />
             <span className="text-center from-purple-600 to-blue-400">
               AyushVerma@2025 | Project09 | Explore EnderEcho | 🪶💗👋🏼
             </span>
