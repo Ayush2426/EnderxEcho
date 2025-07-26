@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../Store/useAuthStore";
 import { LogOut, MessageSquare, Settings, User } from "lucide-react";
 import logo from "../Assets/Logo.png"
+import { SocialButton } from "./SocialButton";
 
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
@@ -20,6 +21,7 @@ const Navbar = () => {
               </div>
               <h1 className="text-lg font-bold">EnderEcho</h1>
             </Link>
+            <SocialButton/>
           </div>
 
           <div className="flex items-center gap-2">
