@@ -1,5 +1,4 @@
 import Navbar from "./Components/Navbar";
-
 import HomePage from "./Pages/HomePage";
 import SignUpPage from "./Pages/SignUpPage";
 import LoginPage from "./Pages/LoginPage";
@@ -10,21 +9,26 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "./Store/useAuthStore.js";
 import { useThemeStore } from "./Store/useThemeStore.js";
 import { useEffect } from "react";
+import { useChatStore } from "./Store/useChatStore.js"; // ADDED: Import the chat store
 
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
-  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   const { theme } = useThemeStore();
-
-  console.log({ onlineUsers });
+  const listenForMessages = useChatStore((state) => state.listenForMessages); // ADDED: Get the listener function
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
-  console.log({ authUser });
+  // ADDED: This new useEffect hook starts the message listener
+  useEffect(() => {
+    if (authUser) {
+      listenForMessages();
+    }
+  }, [authUser, listenForMessages]);
 
   if (isCheckingAuth && !authUser)
     return (
@@ -38,11 +42,23 @@ const App = () => {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
-        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
+        <Route
+          path="/"
+          element={authUser ? <HomePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/signup"
+          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/login"
+          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+        />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+        <Route
+          path="/profile"
+          element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+        />
       </Routes>
 
       <Toaster />

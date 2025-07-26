@@ -8,34 +8,16 @@ import { useAuthStore } from "../Store/useAuthStore";
 import { formatMessageTime } from "../Lib/utils.js";
 
 const ChatContainer = () => {
-  const {
-    messages,
-    getMessages,
-    isMessagesLoading,
-    selectedUser,
-    subscribeToMessages,
-    unsubscribeFromMessages,
-  } = useChatStore();
+  const { messages, isMessagesLoading, selectedUser } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
 
+  // This useEffect correctly scrolls to the bottom when messages change.
   useEffect(() => {
-    getMessages(selectedUser._id);
-
-    subscribeToMessages();
-
-    return () => unsubscribeFromMessages();
-  }, [
-    selectedUser._id,
-    getMessages,
-    subscribeToMessages,
-    unsubscribeFromMessages,
-  ]);
-
-  useEffect(() => {
-    if (messageEndRef.current && messages) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    // A short timeout gives the browser time to render the new message before scrolling
+    setTimeout(() => {
+      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   }, [messages]);
 
   if (isMessagesLoading) {
@@ -59,9 +41,8 @@ const ChatContainer = () => {
             className={`chat ${
               message.senderId === authUser._id ? "chat-end" : "chat-start"
             }`}
-            ref={messageEndRef}
           >
-            <div className=" chat-image avatar">
+            <div className="chat-image avatar">
               <div className="size-10 rounded-full border">
                 <img
                   src={
@@ -86,10 +67,13 @@ const ChatContainer = () => {
                   className="sm:max-w-[200px] rounded-md mb-2"
                 />
               )}
+              {/* FIXED: Changed 'message.message' back to 'message.text' */}
               {message.text && <p>{message.text}</p>}
             </div>
           </div>
         ))}
+        {/* This empty div is a stable reference point to scroll to the bottom */}
+        <div ref={messageEndRef} />
       </div>
 
       <MessageInput />

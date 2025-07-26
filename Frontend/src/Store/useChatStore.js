@@ -10,29 +10,50 @@ export const useChatStore = create((set, get) => ({
   isUsersLoading: false,
   isMessagesLoading: false,
 
+  // ADDED: State and actions for unread message counts
+  unreadCounts: {}, // Format: { userId: count }
+  incrementUnreadCount: (userId) =>
+    set((state) => ({
+      unreadCounts: {
+        ...state.unreadCounts,
+        [userId]: (state.unreadCounts[userId] || 0) + 1,
+      },
+    })),
+  resetUnreadCount: (userId) =>
+    set((state) => {
+      const newCounts = { ...state.unreadCounts };
+      if (newCounts[userId]) {
+        delete newCounts[userId];
+      }
+      return { unreadCounts: newCounts };
+    }),
+
   getUsers: async () => {
     set({ isUsersLoading: true });
     try {
       const res = await axiosInstance.get("/messages/users");
       set({ users: res.data });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Failed to get users");
     } finally {
       set({ isUsersLoading: false });
     }
   },
 
   getMessages: async (userId) => {
+    // ADDED: Reset the count when we fetch messages for a user
+    get().resetUnreadCount(userId);
     set({ isMessagesLoading: true });
     try {
       const res = await axiosInstance.get(`/messages/${userId}`);
       set({ messages: res.data });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Failed to get messages");
     } finally {
       set({ isMessagesLoading: false });
     }
   },
+
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
     try {
@@ -42,31 +63,37 @@ export const useChatStore = create((set, get) => ({
       );
       set({ messages: [...messages, res.data] });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Failed to send message");
     }
   },
 
-  subscribeToMessages: () => {
-    const { selectedUser } = get();
-    if (!selectedUser) return;
-
+  // UPDATED: Renamed from subscribeToMessages to be more accurate
+  listenForMessages: () => {
     const socket = useAuthStore.getState().socket;
+    if (!socket) return;
+
+    // Remove any old listeners to prevent duplicates
+    socket.off("newMessage");
 
     socket.on("newMessage", (newMessage) => {
-      const isMessageSentFromSelectedUser =
-        newMessage.senderId === selectedUser._id;
-      if (!isMessageSentFromSelectedUser) return;
+      const { selectedUser, messages, incrementUnreadCount } = get();
 
-      set({
-        messages: [...get().messages, newMessage],
-      });
+      // Check if the incoming message is from the currently selected user
+      if (selectedUser?._id === newMessage.senderId) {
+        // If the chat is open, add the message to the view
+        set({ messages: [...messages, newMessage] });
+        // NOTE: You would also mark the message as read here via an API call
+      } else {
+        // If the chat is NOT open, increment the unread count
+        toast.success(`New message received!`); // Optional: notify the user
+        incrementUnreadCount(newMessage.senderId);
+      }
     });
   },
 
-  unsubscribeFromMessages: () => {
-    const socket = useAuthStore.getState().socket;
-    socket.off("newMessage");
+  // UPDATED: Now fetches messages when a user is selected
+  setSelectedUser: (selectedUser) => {
+    set({ selectedUser, messages: [] }); // Clear previous messages
+    get().getMessages(selectedUser._id);
   },
-
-  setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));
