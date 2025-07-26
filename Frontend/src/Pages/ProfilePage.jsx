@@ -65,7 +65,7 @@ const ProfilePage = () => {
             <p className="text-sm text-zinc-400">
               {isUpdatingProfile
                 ? "Uploading..."
-                : "Click the camera icon to update your photo (keep image size below 60kb)"}
+                : "Click the camera icon to update your photo!"}
             </p>
           </div>
 
