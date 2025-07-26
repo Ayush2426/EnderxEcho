@@ -12,7 +12,8 @@ import { app, server } from "./lib/socket.js";
 
 // --- Basic Middleware ---
 dotenv.config();
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ limit: "5mb", extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
