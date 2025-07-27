@@ -4,7 +4,7 @@ import { useAuthStore } from "../Store/useAuthStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
 import { Users } from "lucide-react";
 import { formatDistanceToNowStrict } from "date-fns"; // For formatting the timestamp
-
+// Just a random comment to update commit
 const Sidebar = () => {
   const {
     getUsers,
