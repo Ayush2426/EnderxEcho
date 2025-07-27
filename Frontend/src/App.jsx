@@ -4,6 +4,8 @@ import SignUpPage from "./Pages/SignUpPage";
 import LoginPage from "./Pages/LoginPage";
 import SettingsPage from "./Pages/SettingsPage";
 import ProfilePage from "./Pages/ProfilePage";
+import StatsPage from "./Pages/StatPage.jsx";
+import { useVisitStore } from "./Store/useVisitStore.js";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -23,6 +25,12 @@ const App = () => {
   const { authUser, checkAuth, isCheckingAuth, socket } = useAuthStore();
   const { theme } = useThemeStore();
   const listenForMessages = useChatStore((state) => state.listenForMessages);
+
+  const logVisit = useVisitStore((state) => state.logVisit);
+
+  useEffect(() => {
+    logVisit();
+  }, [logVisit]);
 
   // --- AGORA HOOKS ---
   const {
@@ -118,6 +126,10 @@ const App = () => {
         <Route
           path="/profile"
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/stats"
+          element={authUser ? <StatsPage /> : <Navigate to="/login" />}
         />
       </Routes>
       <Toaster />

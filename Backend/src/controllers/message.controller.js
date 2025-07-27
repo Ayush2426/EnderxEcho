@@ -3,16 +3,17 @@ import Message from "../models/message.model.js";
 import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
 
+// --- THIS IS THE UPDATED FUNCTION ---
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
 
-    // Get all users except the current one
+    // 1. Get all users from the database except the currently logged-in one.
     const allUsers = await User.find({ _id: { $ne: loggedInUserId } }).select(
       "-password"
     );
 
-    // For each user, find the last message exchanged with the logged-in user
+    // 2. For each user, find the last message exchanged with the logged-in user.
     const usersWithLastMessage = await Promise.all(
       allUsers.map(async (user) => {
         const lastMessage = await Message.findOne({
@@ -20,19 +21,18 @@ export const getUsersForSidebar = async (req, res) => {
             { senderId: loggedInUserId, receiverId: user._id },
             { senderId: user._id, receiverId: loggedInUserId },
           ],
-        }).sort({ createdAt: -1 });
+        }).sort({ createdAt: -1 }); // Get the most recent message
 
-        // Attach the last message to the user object
-        // The toJSON() is important to make the user object mutable
+        // Attach the last message to the user object.
         const userObj = user.toJSON();
         userObj.lastMessage = lastMessage;
         return userObj;
       })
     );
 
-    // Sort the users based on the time of the last message
+    // 3. Sort the final list so users with the most recent messages appear first.
     usersWithLastMessage.sort((a, b) => {
-      if (!a.lastMessage) return 1;
+      if (!a.lastMessage) return 1; // Users with no messages go to the bottom
       if (!b.lastMessage) return -1;
       return (
         new Date(b.lastMessage.createdAt) - new Date(a.lastMessage.createdAt)
@@ -58,7 +58,7 @@ export const getMessages = async (req, res) => {
         { senderId: myId, receiverId: userToChatId },
         { senderId: userToChatId, receiverId: myId },
       ],
-    }).sort({ createdAt: 1 }); // Sorted to show oldest first
+    }).sort({ createdAt: 1 });
 
     res.status(200).json(messages);
   } catch (error) {

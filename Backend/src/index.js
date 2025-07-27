@@ -7,6 +7,7 @@ import path from "path";
 
 import connectDB from "./lib/db.js";
 import authRoutes from "./routes/auth.route.js";
+import statsRoutes from "./routes/stats.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { app, server } from "./lib/socket.js";
 
@@ -29,7 +30,8 @@ const __dirname = path.resolve();
 // All API routes should be defined BEFORE the frontend serving logic.
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
-app.use("/api/agora", agoraRoutes)
+app.use("/api/agora", agoraRoutes);
+app.use("/api/stats", statsRoutes);
 // --- Frontend Serving Logic (for Production) ---
 // This block should come AFTER all API routes.
 if (process.env.NODE_ENV === "production") {

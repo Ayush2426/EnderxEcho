@@ -1,2 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400&display=swap');
+
+
 @import "tailwindcss";
 @plugin "daisyui";
+
+.font-heading {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-body {
+  font-family: 'Dancing Script', sans-serif;
+}
+
+.font-cursive {
+  font-family: 'Dancing Script', cursive;
+}
