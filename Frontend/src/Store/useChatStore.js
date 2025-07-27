@@ -92,8 +92,14 @@ export const useChatStore = create((set, get) => ({
   },
 
   // UPDATED: Now fetches messages when a user is selected
+  // The new, corrected code
   setSelectedUser: (selectedUser) => {
-    set({ selectedUser, messages: [] }); // Clear previous messages
-    get().getMessages(selectedUser._id);
+    set({ selectedUser });
+
+    // Only fetch messages if a user is actually selected (not null)
+    if (selectedUser) {
+      set({ messages: [] }); // Clear previous messages
+      get().getMessages(selectedUser._id);
+    }
   },
 }));

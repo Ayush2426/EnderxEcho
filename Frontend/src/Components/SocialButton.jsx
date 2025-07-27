@@ -38,7 +38,7 @@ export const SocialButton = ({ className, ...props }) => {
       >
         <button
           className={cn(
-            "w-48 relative h-10 px-4 py-2 flex items-center justify-center gap-2",
+            "w-42 relative h-10 px-4 py-2 flex items-center justify-center gap-2",
             "bg-gray-800/50 dark:bg-black/30",
             "hover:bg-gray-700/70 dark:hover:bg-black/50",
             "text-white dark:text-gray-200",
