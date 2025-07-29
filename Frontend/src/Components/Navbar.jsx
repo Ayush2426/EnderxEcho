@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../Store/useAuthStore";
-import { LogOut, Settings, User, BarChart3 } from "lucide-react";
+import { LogOut, Settings, User, BarChart3, MessagesSquare } from "lucide-react";
 import logo from "../Assets/Logo.png";
 import { SocialButton } from "./SocialButton";
 
@@ -64,21 +64,27 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/stats" className="justify-between" >
+                    <Link to="/stats" className="justify-between">
                       Statistics
                       <BarChart3 className="w-4 h-4" />{" "}
                       {/* Remember to import BarChart3 from lucide-react */}
                     </Link>
                   </li>
                   <li>
-                    <Link to="/settings" className="justify-between" >
+                    <Link to="/settings" className="justify-between">
                       Settings
                       <Settings className="w-4 h-4" />
                     </Link>
                   </li>
+                  <li>
+                    <Link to="/feedback" className="justify-between">
+                      Feedback
+                      <MessagesSquare className="w-4 h-4" />
+                    </Link>
+                  </li>
                   <div className="divider my-1" />
                   <li>
-                    <button onClick={logout} className="justify-between" >
+                    <button onClick={logout} className="justify-between">
                       Logout
                       <LogOut className="w-4 h-4" />
                     </button>
