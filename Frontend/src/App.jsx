@@ -6,7 +6,6 @@ import SettingsPage from "./Pages/SettingsPage";
 import ProfilePage from "./Pages/ProfilePage";
 import StatsPage from "./Pages/StatPage.jsx";
 import { useVisitStore } from "./Store/useVisitStore.js";
-import PushNotificationManager from "./Components/PushNotificationManager.jsx";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -109,8 +108,6 @@ const App = () => {
       {/* This renders the incoming call pop-up over any page */}
       {isReceivingCall && <IncomingCallModal />}
       {/* --- END AGORA UI --- */}
-      {/* Push Notification renderer */}
-      {authUser && <PushNotificationManager />}
 
       <Navbar />
       <Routes>
